@@ -3,67 +3,58 @@
  
 <?php
 session_start();
-    if(!isset($_SESSION['x']))
-        header("location:userlogin.php");
-    
-    
-    $conn=mysqli_connect("localhost","root","","crime_portal");
-    if(!$conn)
-    {
-        die("could not connect".mysqli_error());
-    }
-    mysqli_select_db("crime_portal",$conn);
-    
-    $u_id=$_SESSION['u_id'];
-        
-        $result=mysqli_query($conn,"SELECT a_no FROM user where u_id='$u_id' ");
-        $q2=mysqli_fetch_assoc($result);
-        $a_no=$q2['a_no'];
-    
-        $result1=mysqli_query($conn,"SELECT u_name FROM user where u_id='$u_id' ");
-        $q2=mysqli_fetch_assoc($result1);
-        $u_name=$q2['u_name'];
-    
-    
-if(isset($_POST['s'])){
-    $con=mysqli_connect('localhost','root','');
-    if(!$con)
-    {
-        die('could not connect: '.mysqli_error());
-    }
-    if($_SERVER["REQUEST_METHOD"]=="POST")
-    {
-        
-        
-        $location=$_POST['location'];
-        $type_crime=$_POST['type_crime'];
-        $d_o_c=$_POST['d_o_c'];
-        $description=$_POST['description'];
-        
-        $var=strtotime(date("Ymd"))-strtotime($d_o_c);
-        
-        
-    if($var>=0)
-    {
-          
-      $comp="INSERT into complaint(a_no,location,type_crime,d_o_c,description) values('$a_no','$location','$type_crime','$d_o_c','$description')";
-      mysqli_select_db($conn,"crime_portal"); 
-      $res=mysqli_query($conn,$comp);
-      
-      if(!$res)
-      {
+if (!isset($_SESSION['x']))
+  header("location:userlogin.php");
+
+
+$conn = mysqli_connect("localhost", "root", "", "crime_portal");
+if (!$conn) {
+  die("could not connect" . mysqli_error($conn));
+}
+mysqli_select_db($conn, "crime_portal");
+
+$u_id = $_SESSION['u_id'];
+
+$result = mysqli_query($conn, "SELECT a_no FROM user where u_id='$u_id' ");
+$q2 = mysqli_fetch_assoc($result);
+$a_no = $q2['a_no'];
+
+$result1 = mysqli_query($conn, "SELECT u_name FROM user where u_id='$u_id' ");
+$q2 = mysqli_fetch_assoc($result1);
+$u_name = $q2['u_name'];
+
+
+if (isset($_POST['s'])) {
+  $con = mysqli_connect('localhost', 'root', '');
+  if (!$con) {
+    die('could not connect: ' . mysqli_error($con));
+  }
+  if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+
+    $location = $_POST['location'];
+    $type_crime = $_POST['type_crime'];
+    $d_o_c = $_POST['d_o_c'];
+    $description = $_POST['description'];
+
+    $var = strtotime(date("Ymd")) - strtotime($d_o_c);
+
+
+    if ($var >= 0) {
+
+      $comp = "INSERT into complaint(a_no,location,type_crime,d_o_c,description) values('$a_no','$location','$type_crime','$d_o_c','$description')";
+      mysqli_select_db($conn, "crime_portal");
+      $res = mysqli_query($conn, $comp);
+
+      if (!$res) {
         $message1 = "Complaint already filed";
         echo "<script type='text/javascript'>alert('$message1');</script>";
+      } else {
+        $message = "Complaint Registered Successfully";
+        echo "<script type='text/javascript'>alert('$message');</script>";
       }
-      else
-      {
-          $message = "Complaint Registered Successfully";
-          echo "<script type='text/javascript'>alert('$message');</script>";
-      }
-    }
-    else
-    {
-     $message = "Enter Valid Date";
+    } else {
+      $message = "Enter Valid Date";
       echo "<script type='text/javascript'>alert('$message');</script>";
     }
   }
@@ -84,22 +75,22 @@ if(isset($_POST['s'])){
  </script>
    
 <head>
-	<title>Complainer Home Page</title>
+  <title>Complainer Home Page</title>
 
-	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 
-	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 
-	<link href="http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
+  <link href="http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
 
-	<link href="complainer_page.css" rel="stylesheet" type="text/css" media="all" />
+  <link href="complainer_page.css" rel="stylesheet" type="text/css" media="all" />
 
 </head>
 
 <body style="background-size: cover;
     background-image: url(home_bg1.jpeg);
     background-position: center;">
-	<nav  class="navbar navbar-default navbar-fixed-top">
+  <nav  class="navbar navbar-default navbar-fixed-top">
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -127,28 +118,28 @@ if(isset($_POST['s'])){
     
     
 <div class="video" style="margin-top: 5%"> 
-	<div class="center-container">
-		 <div class="bg-agile">
-			<br><br>
-			<div class="login-form"><p><h2 style="color:white">Welcome <?php echo "$u_name" ?></h2></p><br>
+  <div class="center-container">
+     <div class="bg-agile">
+      <br><br>
+      <div class="login-form"><p><h2 style="color:white">Welcome <?php echo "$u_name" ?></h2></p><br>
                                     <p><h2>Log New Complain</h2></p><br>	
-				<form action="#" method="post" style="color: gray">
-				<div class="top-w3-agile" style="color: gray">Location of Crime
+        <form action="#" method="post" style="color: gray">
+        <div class="top-w3-agile" style="color: gray">Location of Crime
         <select class="form-control" name="location">
-						<option>Theft</option>
-						<option>Robbery</option>
+            <option>Theft</option>
+            <option>Robbery</option>
                         <option>School</option>
                         <option>Hostel</option>
                         <option>Classroom</option>
                         <option>School Market</option>
                         <option>Sport Center</option>
                         <option>Others</option>
-				    </select>
-				</div>
-				<div class="top-w3-agile" style="color: gray">Type of Crime
-					<select class="form-control" name="type_crime">
-						<option>Theft</option>
-						<option>Robbery</option>
+            </select>
+        </div>
+        <div class="top-w3-agile" style="color: gray">Type of Crime
+          <select class="form-control" name="type_crime">
+            <option>Theft</option>
+            <option>Robbery</option>
                         <option>Pick Pocket</option>
                         <option>Murder</option>
                         <option>Rape</option>
@@ -156,22 +147,22 @@ if(isset($_POST['s'])){
                         <option>Kidnapping</option>
                         <option>Missing Person</option>
                         <option>Others</option>
-				    </select>
-				</div>
-					<div class="Top-w3-agile" style="color: gray">
-					Date Of Crime : &nbsp &nbsp  
-						<input style="background-color: #313131;color: white" type="date" name="d_o_c" required>
-					</div>
-					<br>
-					<div class="top-w3-agile" style="color: gray">
-					Description
-						<textarea  name="description" rows="20" cols="50" placeholder="Describe the incident in details with time" onfocusout="f1()" id="desc" required></textarea>
-					</div>
-					<input type="submit" value="Submit" name="s">
-				</form>	
-			</div>	
-		</div>
-	</div>	
+            </select>
+        </div>
+          <div class="Top-w3-agile" style="color: gray">
+          Date Of Crime : &nbsp &nbsp  
+            <input style="background-color: #313131;color: white" type="date" name="d_o_c" required>
+          </div>
+          <br>
+          <div class="top-w3-agile" style="color: gray">
+          Description
+            <textarea  name="description" rows="20" cols="50" placeholder="Describe the incident in details with time" onfocusout="f1()" id="desc" required></textarea>
+          </div>
+          <input type="submit" value="Submit" name="s">
+        </form>	
+      </div>	
+    </div>
+  </div>	
 </div>	
 <div style="position: relative;
    left: 0;
