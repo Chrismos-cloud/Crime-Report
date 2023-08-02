@@ -1,35 +1,37 @@
 <!DOCTYPE html>
 <html>
 <?php
-if(isset($_POST['s'])){
-    $con=mysqli_connect('localhost','root','','crime_portal');
-    if(!$con)
-    {
-        die('could not connect: '.mysqli_error());
-    }
-    if($_SERVER["REQUEST_METHOD"]=="POST"){
-        $u_name=$_POST['name'];
-        $u_id=$_POST['email'];
-        $u_pass=$_POST['password'];
-        $u_addr=$_POST['adress'];
-        $a_no=$_POST['aadhar_number'];
-        $gen=$_POST['gender'];
-        $mob=$_POST['mobile_number'];
+if (isset($_POST['s'])) {
+  $con = mysqli_connect('localhost', 'root', '', 'crime_portal');
+  if (!$con) {
+    die('could not connect: ' . mysqli_error($con));
+  }
+  if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $u_name = $_POST['name'];
+    $u_id = $_POST['email'];
+    $u_pass = $_POST['password'];
+    $u_addr = $_POST['adress'];
+    $a_no = $_POST['aadhar_number'];
+    $gen = $_POST['gender'];
+    $mob = $_POST['mobile_number'];
 
-        if(!empty($u_name) && !empty($u_pass))
-        {
-        $query="INSERT INTO user (u_name,u_id,u_pass,u_addr,a_no,gen,mob) VALUES ('$u_name','$u_id','$u_pass','$u_addr','$a_no','$gen','$mob')";
-        
+    if (!empty($u_name) && !empty($u_pass)) {
+      $query = mysqli_query($con, "SELECT * FROM user WHERE u_id = '$u_id'");
+      
+      if (mysqli_num_rows($query) > 0) {
+        echo "Email Id already exist!";
+      } else {
+        $query = "INSERT INTO user (u_name,u_id,u_pass,u_addr,a_no,gen,mob) VALUES ('$u_name','$u_id','$u_pass','$u_addr','$a_no','$gen','$mob')";
+  
         mysqli_query($con, $query);
-
+  
         header("Location: userlogin.php");
-        die;
-        }else
-        {
-          echo "Please enter some valid information";
-        }
-       
+      }
+    } else {
+      echo "Please enter some valid information";
     }
+
+  }
 }
 ?>
   
@@ -58,17 +60,17 @@ if(isset($_POST['s'])){
             var sta3=document.getElementById("addr").value;
             var sta4=document.getElementById("aadh").value;
             var sta5=document.getElementById("mobno").value;
-	   
+     
   var x=sta.trim();
   var x1=sta1.indexOf(' ');
   var x2=sta2.indexOf(' ');
   var x3=sta3.trim();
   var x4=sta4.indexOf(' ');
-	var x5=sta5.indexOf(' ');
-	if(sta!="" && x==""){
-		document.getElementById("name1").value="";
-		document.getElementById("name1").focus();
-		  alert("Space Not Allowed");
+  var x5=sta5.indexOf(' ');
+  if(sta!="" && x==""){
+    document.getElementById("name1").value="";
+    document.getElementById("name1").focus();
+      alert("Space Not Allowed");
         }
         
          else if(sta1!="" && x1>=0){
@@ -127,33 +129,33 @@ if(isset($_POST['s'])){
     </div>
   </div>
 </nav>
-	
+  
 <div class="video" style="margin-top: 5%"> 
-	<div class="center-container">
-		 <div class="bg-agile">
-			<br><br>
-			<div class="login-form">	
-				<form action="#" method="post">
-					<p style="color:#dfdfdf">Full Name</p><input type="text"  name="name"  required="" id="name1" onfocusout="f1()" />
-					<p style="color:#dfdfdf">Email-Id</p><input type="email"  name="email"  required="" id="email1" onfocusout="f1()"/>
+  <div class="center-container">
+     <div class="bg-agile">
+      <br><br>
+      <div class="login-form">	
+        <form action="#" method="post">
+          <p style="color:#dfdfdf">Full Name</p><input type="text"  name="name"  required="" id="name1" onfocusout="f1()" />
+          <p style="color:#dfdfdf">Email-Id</p><input type="email"  name="email"  required="" id="email1" onfocusout="f1()"/>
                     <p style="color:#dfdfdf">Password</p><input type="text"  name="password"  placeholder="6 Character minimum" pattern=".{6,}" id="pass" onfocusout="f1()"/>
-					<p style="color:#dfdfdf">Home Address</p><input type="text"  name="adress"  required="" id="addr" onfocusout="f1()"/>
-					<p style="color:#dfdfdf">Matric Number</p><input type="text"  name="aadhar_number">
-					<div class="left-w3-agile">
-						<p style="color:#dfdfdf">Gender</p><select class="form-control" name="gender">
-							<option>Male</option>
-							<option>Female</option>
-							<option>Others</option>
-						</select>
-					</div>
-					<div class="right-agileits">
-						<p style="color:#dfdfdf">Mobile</p><input type="text"  name="mobile_number">
-					</div>
-					<input type="submit" value="Submit" name="s">
-				</form>	
-			</div>	
-		</div>
-	</div>	
+          <p style="color:#dfdfdf">Home Address</p><input type="text"  name="adress"  required="" id="addr" onfocusout="f1()"/>
+          <p style="color:#dfdfdf">Matric Number</p><input type="text"  name="aadhar_number">
+          <div class="left-w3-agile">
+            <p style="color:#dfdfdf">Gender</p><select class="form-control" name="gender">
+              <option>Male</option>
+              <option>Female</option>
+              <option>Others</option>
+            </select>
+          </div>
+          <div class="right-agileits">
+            <p style="color:#dfdfdf">Mobile</p><input type="text"  name="mobile_number">
+          </div>
+          <input type="submit" value="Submit" name="s">
+        </form>	
+      </div>	
+    </div>
+  </div>	
 </div>	
  <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.js"></script>
  <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
